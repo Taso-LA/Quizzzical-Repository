@@ -7,5 +7,7 @@ public class Quizzzical
         /*Welcome to Quizzzical Gents,
         Lets work!!!*/
         System.out.println("Taso testing");
+        System.out.println("Olo testing.");
+        System.out.println("clint watch the master at work");
     }
 }
