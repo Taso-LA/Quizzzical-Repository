@@ -6,5 +6,6 @@ public class Quizzzical
     {
         /*Welcome to Quizzzical Gents,
         Lets work!!!*/
+        System.out.println("hi");
     }
 }
