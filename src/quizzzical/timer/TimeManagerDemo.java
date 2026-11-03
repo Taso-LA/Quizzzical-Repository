@@ -11,13 +11,19 @@ public class TimeManagerDemo
         //creating a time manager object
         TimeManager timeManager = new TimeManager();
         
-        //converts 07 hours, 03 minutes, 20 seconds
+        //test 1: valid time
         int totalSeconds = timeManager.convertToSeconds(07, 03, 20);
         
-        //displays the results
-        System.out.println("Total Seconds: " + totalSeconds);
+        System.out.println("Total seconds: " + totalSeconds);
+        System.out.println("Formatted time: " + timeManager.formatTime(totalSeconds));
         
-        //displays formatted time
-        System.out.println("Formatted Time: " + timeManager.formatTime(totalSeconds));
+        //test 2: invalid time
+        try
+        {
+            timeManager.convertToSeconds(07, 75, 20);
+        } catch(IllegalArgumentException e)
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
