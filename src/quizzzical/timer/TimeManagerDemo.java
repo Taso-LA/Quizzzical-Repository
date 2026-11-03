@@ -29,7 +29,7 @@ public class TimeManagerDemo
         System.out.println("Remaining time: " + timeManager.formatTime(remainingTime));
         
         //testing what happens when time expires
-        int expiredTime = timeManager.calculateRemainingTime(quizDuration, 2800);
+        int expiredTime = timeManager.calculateRemainingTime(quizDuration, 2950);
         
         System.out.println("After time expires: " + timeManager.formatTime(expiredTime));
     }
