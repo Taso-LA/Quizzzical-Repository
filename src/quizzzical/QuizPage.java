@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 * - Countdown timer in the top bar; turns RED in the last 60 seconds.
 * - The quiz is submitted automatically when the timer hits zero,
 * or by the student pressing "Submit quiz".
-* Placeholder: swap the centre label for the group's quiz questions.
+* Placeholder: the centre label for the group's quiz questions.
 */
 public class QuizPage extends JFrame {
 
