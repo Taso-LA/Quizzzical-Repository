@@ -9,16 +9,18 @@ public class QuizTimerDemo
 {
     public static void main(String[] args) 
     {
-        //creatind a timer with 10 seconds
-        QuizTimer quizTimer = new QuizTimer(10);
+        //start with 5 minutes and 2 seconds
+        QuizTimer quizTimer = new QuizTimer(302); 
         
-        //starts the countdown
         quizTimer.start();
         
-        //keeps the demo running for 11 seconds
         try
         {
-            Thread.sleep(11000);
+            //let the timer run for 3 seconds
+            Thread.sleep(3500);
+            
+            //stop the timer
+            quizTimer.stop();
         }
         catch(InterruptedException e)
         {
