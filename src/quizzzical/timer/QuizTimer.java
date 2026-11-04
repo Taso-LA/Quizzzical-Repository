@@ -17,6 +17,9 @@ public class QuizTimer
     //helps us format and calculate time
     private TimeManager timeManager;
     
+    //allows QuizTimer to use the TimeoutHandler
+    private TimeoutHandler timeoutHandler;
+    
     //checks the timer's state
     private boolean hasStarted = false;
     private boolean isPaused = false;
@@ -38,6 +41,7 @@ public class QuizTimer
         remainingSeconds = quizDuration;
         
         timeManager = new TimeManager();
+        timeoutHandler = new TimeoutHandler();
         
         //updates the countdown every second
         countdownTimer = new Timer(1000, event -> updateTimer());
@@ -116,8 +120,8 @@ public class QuizTimer
             isFinished = true;
             isPaused = false;
             
-            System.out.println("Time is up...");
-            System.out.println("Automatic submittion!");
+            //handle quiz timeout
+            timeoutHandler.handleTimeout();
         }
         
     }
