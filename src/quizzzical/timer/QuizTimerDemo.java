@@ -10,7 +10,7 @@ public class QuizTimerDemo
     public static void main(String[] args) 
     {
         //start with 5 minutes and 2 seconds
-        QuizTimer quizTimer = new QuizTimer(302); 
+        QuizTimer quizTimer = new QuizTimer(60); 
         
         quizTimer.start();
         
