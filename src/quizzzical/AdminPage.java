@@ -26,7 +26,7 @@ root.add(LoginPage.header("Admin view", onLogout), BorderLayout.NORTH);
 // Each student's grades (replace the sample row with real results later)
 DefaultTableModel model = new DefaultTableModel(
 new Object[][]{{"student51", "-", "-"}},
-new String[]{"Student", "Quiz", "Grade"}) {
+new String[]{"Student", "Quiz", "Grade","Time Elapsed"}) {
 @Override public boolean isCellEditable(int r, int c) { return false; }
 };
 JTable table = new JTable(model);
