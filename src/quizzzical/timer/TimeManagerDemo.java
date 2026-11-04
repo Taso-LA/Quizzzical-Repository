@@ -11,19 +11,26 @@ public class TimeManagerDemo
         //creating a time manager object
         TimeManager timeManager = new TimeManager();
         
-        //test 1: valid time
-        int totalSeconds = timeManager.convertToSeconds(07, 03, 20);
+        //setting the duration of the quiz to 50 minutes
+        int quizDuration = timeManager.convertToSeconds(0, 50, 0);
         
-        System.out.println("Total seconds: " + totalSeconds);
-        System.out.println("Formatted time: " + timeManager.formatTime(totalSeconds));
+        //setting the elapsed time to 12 minutes and 35 seconds
+        int elapsedTime = timeManager.convertToSeconds(0, 12, 35);
         
-        //test 2: invalid time
-        try
-        {
-            timeManager.convertToSeconds(07, 75, 20);
-        } catch(IllegalArgumentException e)
-        {
-            System.out.println("Error: " + e.getMessage());
-        }
+        //calculating the remaining time
+        int remainingTime = timeManager.calculateRemainingTime(quizDuration, elapsedTime);
+        
+        //displaying the results
+        System.out.println("Quizzzical Timer");
+        System.out.println("________________");
+        
+        System.out.println("Quiz duration: " + timeManager.formatTime(quizDuration));
+        System.out.println("Elapsed time: " + timeManager.formatTime(elapsedTime));
+        System.out.println("Remaining time: " + timeManager.formatTime(remainingTime));
+        
+        //testing what happens when time expires
+        int expiredTime = timeManager.calculateRemainingTime(quizDuration, 2950);
+        
+        System.out.println("After time expires: " + timeManager.formatTime(expiredTime));
     }
 }
