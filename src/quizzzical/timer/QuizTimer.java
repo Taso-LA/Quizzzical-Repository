@@ -11,6 +11,12 @@ public class QuizTimer
     //stores the time remaining in seconds
     private int remainingSeconds;
     
+    //stores he time when countdown statrs or resumes
+    private int timeAtLastStart;
+    
+    //stores the starting point for time measurement
+    private long startTime;
+    
     //controlls countdown
     private Timer countdownTimer;
     
@@ -54,11 +60,17 @@ public class QuizTimer
         {
             hasStarted = true;
             
+            //remembers the starting time
+            timeAtLastStart = remainingSeconds;
+            
+            //records when countdown starts
+            startTime = System.nanoTime();
+            
             System.out.println("Time starts!");
             
             displayTime();
             
-            checkWarnings();
+            checkStartingWarnings();
             
             countdownTimer.start();
         }
@@ -67,12 +79,32 @@ public class QuizTimer
     //pauses the countdown
     public void pause()
     {
-        if(countdownTimer.isRunning())
+        if(hasStarted && !isPaused && !isFinished)
         {
+            //remembers the previous remaining time
+            int previousRemaining = remainingSeconds;
+
+            //calculates the actual remaining time
+            updateRemainingTime();
+
+            //checks whether a warning was crossed
+            checkWarnings(previousRemaining);
+
+            displayTime();
+
+            //checks whether time expired before the pause
+            if(remainingSeconds <= 0)
+            {
+                finishTimer();
+                
+                return;
+            }
+
+            //stops the countdown
             countdownTimer.stop();
-            
+
             isPaused = true;
-            
+
             System.out.println("Time paused!");
         }
     }
@@ -80,9 +112,15 @@ public class QuizTimer
     //resumes the countdown
     public void resume()
     {
-        if(hasStarted && !isFinished && remainingSeconds > 0 && !countdownTimer.isRunning())
+        if(hasStarted && isPaused && !isFinished && remainingSeconds > 0)
         {
             isPaused = false;
+            
+            //stores the time remaining when resuming
+            timeAtLastStart = remainingSeconds;
+            
+            //starts measuring time againg
+            startTime = System.nanoTime();
             
             System.out.println("Time resumed!");
             
@@ -104,53 +142,111 @@ public class QuizTimer
         }
     }
     
+    //calculates the actual remaining time
+    private void updateRemainingTime()
+    {
+        //calculates how much time has passed
+        long elapsedNanoseconds = System.nanoTime() - startTime;
+
+        //converts nanoseconds into seconds
+        long elapsedSeconds = elapsedNanoseconds / 1_000_000_000L;
+
+        //calculates the remaining time
+        long timeLeft = timeAtLastStart - elapsedSeconds;
+
+        //prevents negative time
+        if(timeLeft < 0)
+        {
+            remainingSeconds = 0;
+        }
+        else
+        {
+            remainingSeconds = (int) timeLeft;
+        }
+    }
+    
+    
     //updates the remaining time
     private void updateTimer()
     {
-        remainingSeconds--;
-        
+        //remembers the previous remaining time
+        int previousRemaining = remainingSeconds;
+
+        //calculates the actual remaining time
+        updateRemainingTime();
+
+        //displays the updated time
         displayTime();
-        
-        checkWarnings();
-        
+
+        //checks the warning system
+        checkWarnings(previousRemaining);
+
+        //checks whether time has expired
         if(remainingSeconds <= 0)
         {
-            countdownTimer.stop();
-            
-            isFinished = true;
-            isPaused = false;
-            
-            //handle quiz timeout
-            timeoutHandler.handleTimeout();
-        }
-        
+            finishTimer();
+        }  
     }
     
+    //finish the countdown when time expires
+    private void finishTimer()
+    {
+        countdownTimer.stop();
+
+        isFinished = true;
+        isPaused = false;
+
+        System.out.println("Time is up!");
+
+        //tells TimeoutHandler to handle submission
+        timeoutHandler.handleTimeout();
+    }
+
     //displays the remaining time
     private void displayTime()
     {
         System.out.println("Time remaining: " + timeManager.formatTime(remainingSeconds));
     }
-    
-    //checks warning that must be displayed
-    private void checkWarnings()
+        
+    //checks warnings when the quiz first starts
+    private void checkStartingWarnings()
     {
+
         if(remainingSeconds == 300)
         {
             showFiveMinuteWarning();
         }
-        
+
         if(remainingSeconds == 120)
         {
             showTwoMinuteWarning();
         }
-        
+
         if(remainingSeconds == 60)
         {
             showOneMinuteWarning();
         }
     }
     
+    //checks warning that must be displayed
+    private void checkWarnings(int previousRemaining)
+    {
+        if(!fiveMinuteWarningShown && previousRemaining > 300 && remainingSeconds <= 300)
+        {
+            showFiveMinuteWarning();
+        }
+
+        if(!twoMinuteWarningShown && previousRemaining > 120 && remainingSeconds <= 120)
+        {
+            showTwoMinuteWarning();
+        }
+
+        if(!oneMinuteWarningShown && previousRemaining > 60 && remainingSeconds <= 60)
+        {
+            showOneMinuteWarning();
+        }
+    }
+
     //display the five minutes warning
     private void showFiveMinuteWarning()
     {
