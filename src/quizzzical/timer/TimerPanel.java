@@ -22,13 +22,10 @@ public class TimerPanel extends JPanel
     //constructor
     public TimerPanel()
     {
-        //sets the panel layout
         setLayout(new BorderLayout(10, 10));
 
-        //sets the panel background
         setBackground(Color.WHITE);
 
-        //adds space around the panel
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         //creates the title label
@@ -58,25 +55,57 @@ public class TimerPanel extends JPanel
         add(statusLabel, BorderLayout.SOUTH);
     }
 
-    //changes the displayed time
+    //updates the displayed time
     public void setTime(String time)
     {
         timeLabel.setText(time);
     }
 
-    //displays a warning message
-    public void showWarning(String message)
+    //displays the five-minute warning
+    public void showFiveMinuteWarning()
     {
-        statusLabel.setText(message);
-        
-        statusLabel.setForeground(Color.RED);
+        showWarning("WARNING: 5 minutes remaining!", new Color(180, 130, 0));
     }
 
-    //changes the status message
+    //displays the two-minute warning
+    public void showTwoMinuteWarning()
+    {
+        showWarning("WARNING: 2 minutes remaining!", new Color(220, 110, 0));
+    }
+
+    //display the one-minute warning
+    public void showOneMinuteWarning()
+    {
+        showWarning("FINAL WARNING: 1 minute remaining!", Color.RED);
+    }
+
+    //displays a warning using a selected colour
+    private void showWarning(String message, Color warningColor)
+    {
+        statusLabel.setText(message);
+
+        statusLabel.setForeground(warningColor);
+
+        timeLabel.setForeground(warningColor);
+    }
+
+    //displays the expired message
+    public void showExpired()
+    {
+        statusLabel.setText("TIME EXPIRED - QUIZ SUBMITTED");
+
+        statusLabel.setForeground(new Color(150, 0, 0));
+
+        timeLabel.setForeground(new Color(150, 0, 0));
+    }
+
+    //restores the normal timer appearance
     public void setStatusMessage(String message)
     {
         statusLabel.setText(message);
 
         statusLabel.setForeground(Color.GREEN.darker());
+
+        timeLabel.setForeground(new Color(30, 60, 120));
     }
 }
