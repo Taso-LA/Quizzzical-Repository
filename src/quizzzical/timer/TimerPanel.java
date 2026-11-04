@@ -42,7 +42,7 @@ public class TimerPanel extends JPanel
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
         //creates the time label
-        timeLabel = new JLabel("00:10:00", SwingConstants.CENTER);
+        timeLabel = new JLabel("00:00:00", SwingConstants.CENTER);
         timeLabel.setFont(new Font("Arial", Font.BOLD, 48));
         timeLabel.setForeground(new Color(30, 60, 120));
 

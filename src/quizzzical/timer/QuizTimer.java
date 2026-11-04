@@ -64,6 +64,9 @@ public class QuizTimer
         if(timerPanel != null)
         {
             timerPanel.setQuizTimer(this);
+            
+            // Display the actual quiz duration
+            timerPanel.setTime(timeManager.formatTime(remainingSeconds));
         }
     }
     
