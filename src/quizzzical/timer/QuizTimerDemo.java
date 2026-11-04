@@ -21,8 +21,8 @@ public class QuizTimerDemo
             //creates the graphical timer panel
             TimerPanel timerPanel = new TimerPanel();
 
-            //creates the countdown with 10 seconds
-            QuizTimer quizTimer = new QuizTimer(10);
+            //creates the countdown
+            QuizTimer quizTimer = new QuizTimer(135);
 
             //connects the countdown to the panel
             quizTimer.setTimerPanel(timerPanel);
@@ -31,7 +31,7 @@ public class QuizTimerDemo
             frame.add(timerPanel);
 
             //sets window properties
-            frame.setSize(450, 220);
+            frame.setSize(550, 250);
 
             frame.setLocationRelativeTo(null);
 
@@ -39,9 +39,6 @@ public class QuizTimerDemo
 
             //displays the window
             frame.setVisible(true);
-
-            //starts the countdown
-            quizTimer.start();
         });
     }
 }

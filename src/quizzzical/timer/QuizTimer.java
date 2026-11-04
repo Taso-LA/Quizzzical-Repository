@@ -60,6 +60,11 @@ public class QuizTimer
     public void setTimerPanel(TimerPanel timerPanel)
     {
         this.timerPanel = timerPanel;
+
+        if(timerPanel != null)
+        {
+            timerPanel.setQuizTimer(this);
+        }
     }
     
     //starts the countdown
@@ -76,6 +81,12 @@ public class QuizTimer
             startTime = System.nanoTime();
             
             System.out.println("Time starts!");
+            
+            //update graphical controls
+            if(timerPanel != null)
+            {
+                timerPanel.showRunning();
+            }
             
             displayTime();
             
@@ -104,8 +115,7 @@ public class QuizTimer
             //checks whether time expired before the pause
             if(remainingSeconds <= 0)
             {
-                finishTimer();
-                
+                finishTimer();                
                 return;
             }
 
@@ -115,6 +125,12 @@ public class QuizTimer
             isPaused = true;
 
             System.out.println("Time paused!");
+            
+            //update graphical controls
+            if(timerPanel != null)
+            {
+                timerPanel.showPaused();
+            }
         }
     }
     
@@ -133,6 +149,12 @@ public class QuizTimer
             
             System.out.println("Time resumed!");
             
+            //update graphical controls
+            if(timerPanel != null)
+            {
+                timerPanel.showRunning();
+            }
+            
             countdownTimer.start();
         }
     }
@@ -148,6 +170,12 @@ public class QuizTimer
             isPaused = false;
             
             System.out.println("Time stopped!");
+            
+            //update graphical controls
+            if(timerPanel != null)
+            {
+                timerPanel.showStopped();
+            }
         }
     }
     
@@ -207,14 +235,14 @@ public class QuizTimer
 
         System.out.println("Time is up!");
 
-        //tells TimeoutHandler to handle submission
+        //handles automatic quiz submission
         timeoutHandler.handleTimeout();
-        
-        //updates the graphical panel
+
+        //updates the graphical timer
         if(timerPanel != null)
-            {
-                timerPanel.showWarning("Time expired! Quiz submitted.");
-            }
+        {
+            timerPanel.showExpired();
+        }
     }
 
     //displays the remaining time
@@ -273,14 +301,12 @@ public class QuizTimer
     //display the five minutes warning
     private void showFiveMinuteWarning()
     {
-        String message = "WARNING: 5 minutes remaining!";
-
         if(timerPanel != null)
         {
-        timerPanel.showWarning(message);
+            timerPanel.showFiveMinuteWarning();
         }
 
-        System.out.println(message);
+        System.out.println("WARNING: 5 minutes remaining!");
 
         fiveMinuteWarningShown = true;
     }
@@ -288,14 +314,12 @@ public class QuizTimer
     //display the two minutes warning
     private void showTwoMinuteWarning()
     {
-        String message = "WARNING: 2 minutes remaining!";
-
         if(timerPanel != null)
         {
-            timerPanel.showWarning(message);
+            timerPanel.showTwoMinuteWarning();
         }
 
-        System.out.println(message);
+        System.out.println("WARNING: 2 minutes remaining!");
 
         twoMinuteWarningShown = true;
     }
@@ -303,14 +327,12 @@ public class QuizTimer
     //display the one minutes warning
     private void showOneMinuteWarning()
     {
-        String message = "FINAL WARNING: 1 minute remaining!";
-
         if(timerPanel != null)
         {
-            timerPanel.showWarning(message);
+            timerPanel.showOneMinuteWarning();
         }
 
-        System.out.println(message);
+        System.out.println("FINAL WARNING: 1 minute remaining!");
 
         oneMinuteWarningShown = true;
     }
