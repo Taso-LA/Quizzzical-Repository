@@ -26,6 +26,9 @@ public class QuizTimer
     //allows QuizTimer to use the TimeoutHandler
     private TimeoutHandler timeoutHandler;
     
+    //connects to the graphical timer panel
+    private TimerPanel timerPanel;
+    
     //checks the timer's state
     private boolean hasStarted = false;
     private boolean isPaused = false;
@@ -51,6 +54,12 @@ public class QuizTimer
         
         //updates the countdown every second
         countdownTimer = new Timer(1000, event -> updateTimer());
+    }
+    
+    //connect the timer to its graphical panel
+    public void setTimerPanel(TimerPanel timerPanel)
+    {
+        this.timerPanel = timerPanel;
     }
     
     //starts the countdown
@@ -200,12 +209,26 @@ public class QuizTimer
 
         //tells TimeoutHandler to handle submission
         timeoutHandler.handleTimeout();
+        
+        //updates the graphical panel
+        if(timerPanel != null)
+            {
+                timerPanel.showWarning("Time expired! Quiz submitted.");
+            }
     }
 
     //displays the remaining time
     private void displayTime()
     {
-        System.out.println("Time remaining: " + timeManager.formatTime(remainingSeconds));
+        String formattedTime = timeManager.formatTime(remainingSeconds);
+
+        System.out.println("Time remaining: " + formattedTime);
+
+        //updates the graphical timer panel
+        if(timerPanel != null)
+        {
+            timerPanel.setTime(formattedTime);
+        }
     }
         
     //checks warnings when the quiz first starts
@@ -250,24 +273,45 @@ public class QuizTimer
     //display the five minutes warning
     private void showFiveMinuteWarning()
     {
-        System.out.println("Warning 5 minutes remaining!");
-        
+        String message = "WARNING: 5 minutes remaining!";
+
+        if(timerPanel != null)
+        {
+        timerPanel.showWarning(message);
+        }
+
+        System.out.println(message);
+
         fiveMinuteWarningShown = true;
     }
     
     //display the two minutes warning
     private void showTwoMinuteWarning()
     {
-        System.out.println("Warning 2 minute remaining!");
-        
+        String message = "WARNING: 2 minutes remaining!";
+
+        if(timerPanel != null)
+        {
+            timerPanel.showWarning(message);
+        }
+
+        System.out.println(message);
+
         twoMinuteWarningShown = true;
     }
     
     //display the one minutes warning
     private void showOneMinuteWarning()
     {
-        System.out.println("Warning 1 minute remaining!");
-        
+        String message = "FINAL WARNING: 1 minute remaining!";
+
+        if(timerPanel != null)
+        {
+            timerPanel.showWarning(message);
+        }
+
+        System.out.println(message);
+
         oneMinuteWarningShown = true;
     }
 }
