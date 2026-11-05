@@ -20,7 +20,7 @@ public class MultipleChoiceQuestion extends Question {
         return correctAnswer.trim().equalsIgnoreCase(userAnswer.trim());
     }
 
-    @Override
+    @Override // inheririting
     public String getQuestionType() {
         return "MULTIPLE";
     }
