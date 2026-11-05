@@ -1,5 +1,4 @@
 package quizzzical.timer;
-
 /**
  *
  * @author tasol
@@ -12,7 +11,7 @@ public class QuizTimerDemo
 {
     public static void main(String[] args)
     {
-        //creates the graphical interface on the EDT
+        //creates the application on the Swing event thread
         SwingUtilities.invokeLater(() ->
         {
             //creates the application window
@@ -21,23 +20,26 @@ public class QuizTimerDemo
             //creates the graphical timer panel
             TimerPanel timerPanel = new TimerPanel();
 
-            //creates the countdown
-            QuizTimer quizTimer = new QuizTimer(135);
+            //sets the user role
+            timerPanel.setUserRole("ADMIN");
 
-            //connects the countdown to the panel
+            //creates the countdown with 10 seconds
+            QuizTimer quizTimer = new QuizTimer(125);
+
+            //connects the timer to the graphical panel
             quizTimer.setTimerPanel(timerPanel);
 
-            //adds the panel to the window
+            //adds the timer panel to the window
             frame.add(timerPanel);
 
-            //sets window properties
-            frame.setSize(550, 250);
+            //configures the window
+            frame.setSize(600, 230);
 
             frame.setLocationRelativeTo(null);
 
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            //displays the window
+            //displays the application
             frame.setVisible(true);
         });
     }

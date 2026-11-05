@@ -6,39 +6,45 @@ package quizzzical.timer;
 
 import javax.swing.Timer;
 
-public class QuizTimer 
+public class QuizTimer
 {
+    //stores the original quiz duration
+    private int totalQuizSeconds;
+
     //stores the time remaining in seconds
     private int remainingSeconds;
-    
-    //stores he time when countdown statrs or resumes
+
+    //stores the time when countdown starts or resumes
     private int timeAtLastStart;
-    
+
     //stores the starting point for time measurement
     private long startTime;
-    
-    //controlls countdown
+
+    //controls countdown
     private Timer countdownTimer;
-    
+
     //helps us format and calculate time
     private TimeManager timeManager;
-    
+
     //allows QuizTimer to use the TimeoutHandler
     private TimeoutHandler timeoutHandler;
-    
+
     //connects to the graphical timer panel
     private TimerPanel timerPanel;
-    
+
     //checks the timer's state
     private boolean hasStarted = false;
     private boolean isPaused = false;
     private boolean isFinished = false;
-    
+
+    //checks whether the user can pause and resume
+    private boolean canPauseResume = false;
+
     //checks warnings that have been displayed
     private boolean fiveMinuteWarningShown = false;
     private boolean twoMinuteWarningShown = false;
     private boolean oneMinuteWarningShown = false;
-    
+
     //constructor
     public QuizTimer(int quizDuration)
     {
@@ -46,17 +52,27 @@ public class QuizTimer
         {
             throw new IllegalArgumentException("Duration must be greater than zero");
         }
-        
+
+        //stores the original quiz duration
+        totalQuizSeconds = quizDuration;
+
+        //stores the remaining time
         remainingSeconds = quizDuration;
-        
+
         timeManager = new TimeManager();
         timeoutHandler = new TimeoutHandler();
-        
+
         //updates the countdown every second
         countdownTimer = new Timer(1000, event -> updateTimer());
     }
-    
-    //connect the timer to its graphical panel
+
+    //sets the user permissions
+    public void setUserRole(String userRole)
+    {
+        canPauseResume = userRole != null && (userRole.equalsIgnoreCase("TEACHER") || userRole.equalsIgnoreCase("EDUCATOR") || userRole.equalsIgnoreCase("ADMIN") || userRole.equalsIgnoreCase("MODERATOR"));
+    }
+
+    //connects the timer to its graphical panel
     public void setTimerPanel(TimerPanel timerPanel)
     {
         this.timerPanel = timerPanel;
@@ -64,45 +80,48 @@ public class QuizTimer
         if(timerPanel != null)
         {
             timerPanel.setQuizTimer(this);
-            
-            // Display the actual quiz duration
+
+            //displays the actual quiz duration
             timerPanel.setTime(timeManager.formatTime(remainingSeconds));
+
+            //updates the circular progress
+            timerPanel.setProgress(totalQuizSeconds, remainingSeconds);
         }
     }
-    
+
     //starts the countdown
     public void start()
     {
         if(!hasStarted && !isFinished)
         {
             hasStarted = true;
-            
+
             //remembers the starting time
             timeAtLastStart = remainingSeconds;
-            
+
             //records when countdown starts
             startTime = System.nanoTime();
-            
+
             System.out.println("Time starts!");
-            
-            //update graphical controls
+
+            //updates graphical controls
             if(timerPanel != null)
             {
                 timerPanel.showRunning();
             }
-            
+
             displayTime();
-            
+
             checkStartingWarnings();
-            
+
             countdownTimer.start();
         }
     }
-    
+
     //pauses the countdown
     public void pause()
     {
-        if(hasStarted && !isPaused && !isFinished)
+        if(canPauseResume && hasStarted && !isPaused && !isFinished)
         {
             //remembers the previous remaining time
             int previousRemaining = remainingSeconds;
@@ -118,7 +137,7 @@ public class QuizTimer
             //checks whether time expired before the pause
             if(remainingSeconds <= 0)
             {
-                finishTimer();                
+                finishTimer();
                 return;
             }
 
@@ -128,60 +147,81 @@ public class QuizTimer
             isPaused = true;
 
             System.out.println("Time paused!");
-            
-            //update graphical controls
+
+            //updates graphical controls
             if(timerPanel != null)
             {
                 timerPanel.showPaused();
             }
         }
     }
-    
+
     //resumes the countdown
     public void resume()
     {
-        if(hasStarted && isPaused && !isFinished && remainingSeconds > 0)
+        if(canPauseResume && hasStarted && isPaused
+                && !isFinished && remainingSeconds > 0)
         {
             isPaused = false;
-            
+
             //stores the time remaining when resuming
             timeAtLastStart = remainingSeconds;
-            
-            //starts measuring time againg
+
+            //starts measuring time again
             startTime = System.nanoTime();
-            
+
             System.out.println("Time resumed!");
-            
-            //update graphical controls
+
+            //updates graphical controls
             if(timerPanel != null)
             {
                 timerPanel.showRunning();
             }
-            
+
             countdownTimer.start();
         }
     }
-    
+
     //stops the countdown permanently
     public void stop()
     {
-        if(!isFinished)
+        if(hasStarted && !isFinished)
         {
+            //updates the time before stopping
+            if(!isPaused)
+            {
+                int previousRemaining = remainingSeconds;
+
+                updateRemainingTime();
+
+                checkWarnings(previousRemaining);
+
+                displayTime();
+
+                //checks whether time expired
+                if(remainingSeconds <= 0)
+                {
+                    finishTimer();
+                    return;
+                }
+            }
+
+            //stops the countdown
             countdownTimer.stop();
-            
+
             isFinished = true;
             isPaused = false;
-            
+
             System.out.println("Time stopped!");
-            
-            //update graphical controls
+
+            //updates graphical controls
             if(timerPanel != null)
             {
                 timerPanel.showStopped();
             }
         }
     }
-    
+
     //calculates the actual remaining time
     private void updateRemainingTime()
     {
@@ -204,8 +244,7 @@ public class QuizTimer
             remainingSeconds = (int) timeLeft;
         }
     }
-    
-    
+
     //updates the remaining time
     private void updateTimer()
     {
@@ -225,16 +264,25 @@ public class QuizTimer
         if(remainingSeconds <= 0)
         {
             finishTimer();
-        }  
+        }
     }
-    
-    //finish the countdown when time expires
+
+    //finishes the countdown when time expires
     private void finishTimer()
     {
+        if(isFinished)
+        {
+            return;
+        }
+
         countdownTimer.stop();
+
+        remainingSeconds = 0;
 
         isFinished = true;
         isPaused = false;
+
+        displayTime();
 
         System.out.println("Time is up!");
 
@@ -244,6 +292,7 @@ public class QuizTimer
         //updates the graphical timer
         if(timerPanel != null)
         {
+            timerPanel.setProgress(100, 0);
             timerPanel.showExpired();
         }
     }
@@ -259,13 +308,15 @@ public class QuizTimer
         if(timerPanel != null)
         {
             timerPanel.setTime(formattedTime);
+
+            //updates the circular progress
+            timerPanel.setProgress(totalQuizSeconds, remainingSeconds);
         }
     }
-        
+
     //checks warnings when the quiz first starts
     private void checkStartingWarnings()
     {
-
         if(remainingSeconds == 300)
         {
             showFiveMinuteWarning();
@@ -281,8 +332,8 @@ public class QuizTimer
             showOneMinuteWarning();
         }
     }
-    
-    //checks warning that must be displayed
+
+    //checks warnings that must be displayed
     private void checkWarnings(int previousRemaining)
     {
         if(!fiveMinuteWarningShown && previousRemaining > 300 && remainingSeconds <= 300)
@@ -301,7 +352,7 @@ public class QuizTimer
         }
     }
 
-    //display the five minutes warning
+    //displays the five-minute warning
     private void showFiveMinuteWarning()
     {
         if(timerPanel != null)
@@ -313,8 +364,8 @@ public class QuizTimer
 
         fiveMinuteWarningShown = true;
     }
-    
-    //display the two minutes warning
+
+    //displays the two-minute warning
     private void showTwoMinuteWarning()
     {
         if(timerPanel != null)
@@ -326,8 +377,8 @@ public class QuizTimer
 
         twoMinuteWarningShown = true;
     }
-    
-    //display the one minutes warning
+
+    //displays the one-minute warning
     private void showOneMinuteWarning()
     {
         if(timerPanel != null)
@@ -340,3 +391,4 @@ public class QuizTimer
         oneMinuteWarningShown = true;
     }
 }
+
