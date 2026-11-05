@@ -50,7 +50,9 @@ public class QuizTimer
     {
         if(quizDuration <= 0)
         {
-            throw new IllegalArgumentException("Duration must be greater than zero");
+            throw new IllegalArgumentException(
+                    "Duration must be greater than zero"
+            );
         }
 
         //stores the original quiz duration
@@ -82,9 +84,11 @@ public class QuizTimer
             timerPanel.setQuizTimer(this);
 
             //displays the actual quiz duration
-            timerPanel.setTime(timeManager.formatTime(remainingSeconds));
+            timerPanel.setTime(
+                    timeManager.formatTime(remainingSeconds)
+            );
 
-            //updates the circular progress
+            //updates the progress bar
             timerPanel.setProgress(totalQuizSeconds, remainingSeconds);
         }
     }
@@ -159,8 +163,7 @@ public class QuizTimer
     //resumes the countdown
     public void resume()
     {
-        if(canPauseResume && hasStarted && isPaused
-                && !isFinished && remainingSeconds > 0)
+        if(canPauseResume && hasStarted && isPaused && !isFinished && remainingSeconds > 0)
         {
             isPaused = false;
 
@@ -187,13 +190,14 @@ public class QuizTimer
     {
         if(hasStarted && !isFinished)
         {
-            //updates the time before stopping
+            //updates the remaining time before stopping
             if(!isPaused)
             {
                 int previousRemaining = remainingSeconds;
 
                 updateRemainingTime();
 
+                //checks whether a warning was crossed
                 checkWarnings(previousRemaining);
 
                 displayTime();
@@ -248,6 +252,12 @@ public class QuizTimer
     //updates the remaining time
     private void updateTimer()
     {
+        //checks whether the timer can continue
+        if(isFinished || isPaused)
+        {
+            return;
+        }
+
         //remembers the previous remaining time
         int previousRemaining = remainingSeconds;
 
@@ -277,11 +287,13 @@ public class QuizTimer
 
         countdownTimer.stop();
 
+        //sets the remaining time to zero
         remainingSeconds = 0;
 
         isFinished = true;
         isPaused = false;
 
+        //updates the displayed time and progress
         displayTime();
 
         System.out.println("Time is up!");
@@ -292,7 +304,6 @@ public class QuizTimer
         //updates the graphical timer
         if(timerPanel != null)
         {
-            timerPanel.setProgress(100, 0);
             timerPanel.showExpired();
         }
     }
@@ -309,7 +320,7 @@ public class QuizTimer
         {
             timerPanel.setTime(formattedTime);
 
-            //updates the circular progress
+            //updates the progress bar
             timerPanel.setProgress(totalQuizSeconds, remainingSeconds);
         }
     }
@@ -341,12 +352,16 @@ public class QuizTimer
             showFiveMinuteWarning();
         }
 
-        if(!twoMinuteWarningShown && previousRemaining > 120 && remainingSeconds <= 120)
+        if(!twoMinuteWarningShown
+                && previousRemaining > 120
+                && remainingSeconds <= 120)
         {
             showTwoMinuteWarning();
         }
 
-        if(!oneMinuteWarningShown && previousRemaining > 60 && remainingSeconds <= 60)
+        if(!oneMinuteWarningShown
+                && previousRemaining > 60
+                && remainingSeconds <= 60)
         {
             showOneMinuteWarning();
         }
@@ -391,4 +406,3 @@ public class QuizTimer
         oneMinuteWarningShown = true;
     }
 }
-

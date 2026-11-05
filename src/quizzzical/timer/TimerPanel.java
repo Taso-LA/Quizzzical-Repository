@@ -1,6 +1,4 @@
-
 package quizzzical.timer;
-
 /**
  *
  * @author tasol
@@ -48,31 +46,27 @@ public class TimerPanel extends JPanel
     public TimerPanel()
     {
         //sets the main panel layout
-        setLayout(new BorderLayout(15, 15));
+        setLayout(new BorderLayout(8, 8));
 
         //sets the background colour
         setBackground(new Color(241, 245, 250));
 
         //adds spacing around the panel
-        setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
+        setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
 
         //creates the title label
-        titleLabel = new JLabel(
-                "QUIZZZICAL TEST!",
-                SwingConstants.CENTER
-        );
+        titleLabel = new JLabel("QUIZZZICAL - Assessment Timer", SwingConstants.CENTER);
 
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setForeground(new Color(24, 49, 83));
 
         //creates the time label
-        timeLabel = new JLabel(
-                "00:00:00",
-                SwingConstants.CENTER
-        );
+        timeLabel = new JLabel("00:00:00", SwingConstants.CENTER);
 
         timeLabel.setFont(new Font("Arial", Font.BOLD, 34));
         timeLabel.setForeground(new Color(24, 49, 83));
+
+        timeLabel.setPreferredSize(new Dimension(280, 55));
 
         //creates the progress bar
         progressBar = new JProgressBar(0, 100);
@@ -81,13 +75,15 @@ public class TimerPanel extends JPanel
         progressBar.setStringPainted(true);
         progressBar.setString("0% completed");
 
+        progressBar.setFont(new Font("Arial", Font.PLAIN, 11));
+
         progressBar.setForeground(new Color(22, 132, 71));
         progressBar.setBackground(new Color(220, 228, 238));
 
-        progressBar.setPreferredSize(new Dimension(420, 20));
+        progressBar.setPreferredSize(new Dimension(420, 17));
 
         //creates a panel to hold the time and progress bar
-        JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
+        JPanel centerPanel = new JPanel(new BorderLayout(5, 5));
 
         centerPanel.setBackground(new Color(241, 245, 250));
 
@@ -95,12 +91,9 @@ public class TimerPanel extends JPanel
         centerPanel.add(progressBar, BorderLayout.SOUTH);
 
         //creates the status label
-        statusLabel = new JLabel(
-                "Ready to start",
-                SwingConstants.CENTER
-        );
+        statusLabel = new JLabel("Ready to start", SwingConstants.CENTER);
 
-        statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        statusLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         statusLabel.setForeground(new Color(22, 132, 71));
 
         //creates the four buttons
@@ -123,9 +116,7 @@ public class TimerPanel extends JPanel
         //creates a panel to hold the buttons
         JPanel buttonPanel = new JPanel();
 
-        buttonPanel.setLayout(
-                new FlowLayout(FlowLayout.CENTER, 6, 3)
-        );
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
 
         buttonPanel.setBackground(new Color(241, 245, 250));
 
@@ -136,9 +127,7 @@ public class TimerPanel extends JPanel
         buttonPanel.add(stopButton);
 
         //creates a panel for the status and buttons
-        JPanel bottomPanel = new JPanel(
-                new BorderLayout(5, 5)
-        );
+        JPanel bottomPanel = new JPanel(new BorderLayout(3, 3));
 
         bottomPanel.setBackground(new Color(241, 245, 250));
 
@@ -193,9 +182,9 @@ public class TimerPanel extends JPanel
     //styles the buttons
     private void styleButton(JButton button)
     {
-        button.setFont(new Font("Arial", Font.PLAIN, 12));
+        button.setFont(new Font("Arial", Font.PLAIN, 11));
 
-        button.setPreferredSize(new Dimension(75, 28));
+        button.setPreferredSize(new Dimension(68, 25));
 
         button.setFocusPainted(false);
     }
@@ -211,8 +200,7 @@ public class TimerPanel extends JPanel
         this.userRole = userRole;
 
         //checks which roles can pause and resume
-        canPauseResume =
-                userRole.equalsIgnoreCase("TEACHER")
+        canPauseResume = userRole.equalsIgnoreCase("TEACHER")
                 || userRole.equalsIgnoreCase("EDUCATOR")
                 || userRole.equalsIgnoreCase("ADMIN")
                 || userRole.equalsIgnoreCase("MODERATOR");
@@ -280,28 +268,19 @@ public class TimerPanel extends JPanel
     //displays the five-minute warning
     public void showFiveMinuteWarning()
     {
-        showWarning(
-                "WARNING: 5 minutes remaining!",
-                new Color(180, 130, 0)
-        );
+        showWarning("WARNING: 5 minutes remaining!", new Color(180, 130, 0));
     }
 
     //displays the two-minute warning
     public void showTwoMinuteWarning()
     {
-        showWarning(
-                "WARNING: 2 minutes remaining!",
-                new Color(220, 110, 0)
-        );
+        showWarning("WARNING: 2 minutes remaining!", new Color(220, 110, 0));
     }
 
     //displays the one-minute warning
     public void showOneMinuteWarning()
     {
-        showWarning(
-                "FINAL WARNING: 1 minute remaining!",
-                Color.RED
-        );
+        showWarning("FINAL WARNING: 1 minute remaining!", Color.RED);
     }
 
     //displays a warning using a selected colour
@@ -310,10 +289,8 @@ public class TimerPanel extends JPanel
         statusLabel.setText(message);
 
         statusLabel.setForeground(warningColor);
-
         timeLabel.setForeground(warningColor);
 
-        //changes the progress bar colour
         progressBar.setForeground(warningColor);
     }
 
@@ -325,8 +302,11 @@ public class TimerPanel extends JPanel
         statusLabel.setForeground(new Color(150, 0, 0));
         timeLabel.setForeground(new Color(150, 0, 0));
 
+        //sets progress to 100%
         progressBar.setValue(100);
         progressBar.setString("100% completed");
+
+        progressBar.setForeground(new Color(150, 0, 0));
 
         //disables all buttons after submission
         startButton.setEnabled(false);
@@ -341,7 +321,6 @@ public class TimerPanel extends JPanel
         statusLabel.setText("Quiz in progress");
 
         statusLabel.setForeground(new Color(22, 132, 71));
-
         timeLabel.setForeground(new Color(24, 49, 83));
 
         progressBar.setForeground(new Color(22, 132, 71));
