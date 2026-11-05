@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package quizzzical;
 
 import java.util.ArrayList;
@@ -16,7 +12,9 @@ public class Quiz {
     }
 
     public void addQuestion(Question q) {
-        questions.add(q);
+        if (q != null) {
+            questions.add(q);
+        }
     }
 
     public void shuffleQuestions() {
@@ -25,14 +23,30 @@ public class Quiz {
 
     public void gradeQuiz(ArrayList<String> studentAnswers) {
         score = 0;
+        if (studentAnswers == null) {
+            return;
+        }
         for (int i = 0; i < questions.size(); i++) {
-            if (questions.get(i).checkAnswer(studentAnswers.get(i))) {
+            String answer = null;
+            if (i < studentAnswers.size()) {
+                answer = studentAnswers.get(i);
+            }
+            // checkAnswer already handles null, so a missing answer = wrong
+            if (questions.get(i).checkAnswer(answer)) {
                 score += questions.get(i).getPoints();
             }
         }
     }
 
-    public int getScore() { return score; }
-    public int getTotalQuestions() { return questions.size(); }
-    public Question getQuestion(int index) { return questions.get(index); }
+    public int getScore() {
+        return score;
+    }
+
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
+
+    public int getNumQuestions() {
+        return questions.size();
+    }
 }
