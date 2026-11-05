@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
-* Login page for Quizzical!!
+* Login page for Quizzical auhor M.M !!
 *
 * Flow: Admin login + correct admin details -> AdminPage
 * Student login + correct student details -> QuizPage
