@@ -1,7 +1,9 @@
-package quizzzical;
+package quizzzical.model;
 
-public class TFQuestion extends Question {
-    public TFQuestion(String text, String correct, int points) {
+import quizzzical.model.Question;
+
+public class Student extends Question {
+    public Student(String text, String correct, int points) {
         super(text, correct, points);
     }
 

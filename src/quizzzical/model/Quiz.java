@@ -1,5 +1,6 @@
-package quizzzical;
+package quizzzical.model;
 
+import quizzzical.model.Question;
 import java.util.ArrayList;
 import java.util.Collections;
 

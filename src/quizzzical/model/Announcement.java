@@ -1,9 +1,11 @@
-package quizzzical;
+package quizzzical.model;
 
-public class MultipleChoiceQuestion extends Question {
+import quizzzical.model.Question;
+
+public class Announcement extends Question {
     private String[] options;
 
-    public MultipleChoiceQuestion(String text, String[] options, String correct, int points) {
+    public Announcement(String text, String[] options, String correct, int points) {
         super(text, correct, points);
         this.options = options.clone();
     }

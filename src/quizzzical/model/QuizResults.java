@@ -1,5 +1,6 @@
-package quizzzical;
+package quizzzical.model;
 
+import quizzzical.ui.LoginPage;
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 * or by the student pressing "Submit quiz".
 * Placeholder: the centre label for the group's quiz questions.
 */
-public class QuizPage extends JFrame {
+public class QuizResults extends JFrame {
 
 // Quiz time limit in seconds (300 = 5 minutes). Change it here.
 static final int QUIZ_SECONDS = 300;
@@ -22,7 +23,7 @@ static final int WARNING_SECONDS = 60;
 
 static final Color RED = new Color(0xD32F2F);
 
-public QuizPage(String student) {
+public QuizResults(String student) {
 super("Quizzical!! - Quiz");
 setDefaultCloseOperation(EXIT_ON_CLOSE);
 setContentPane(buildContent(student, QUIZ_SECONDS, () -> {
@@ -136,6 +137,6 @@ label.repaint();
 
 // Lets you run this page on its own (Run File) to check how it looks
 public static void main(String[] args) {
-SwingUtilities.invokeLater(() -> new QuizPage("student51").setVisible(true));
+SwingUtilities.invokeLater(() -> new QuizResults("student51").setVisible(true));
 }
 }

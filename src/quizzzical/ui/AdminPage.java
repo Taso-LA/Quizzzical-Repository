@@ -1,4 +1,4 @@
-package quizzzical;
+package quizzzical.ui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

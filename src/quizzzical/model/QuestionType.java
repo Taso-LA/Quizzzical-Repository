@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package quizzzical;
+package quizzzical.model;
+
+import quizzzical.model.Question;
 
 /**
  *
  * @author user
  */
-public class SAQuestion extends Question {
-    public SAQuestion(String text, String correct, int points){
+public class QuestionType extends Question {
+    public QuestionType(String text, String correct, int points){
         super(text, correct, points);
     }
 

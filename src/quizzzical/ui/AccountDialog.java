@@ -1,10 +1,10 @@
-package quizzzical;
+package quizzzical.ui;
 
-public class Quizzzical
+public class AccountDialog
 {
     public static void main(String[] args)
     {
-        /*Welcome to Quizzzical Gents,
+        /*Welcome to AccountDialog Gents,
         Lets work!!!*/
         System.out.println("clint testing");
         System.out.println("Taso testing");

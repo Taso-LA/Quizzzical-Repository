@@ -1,16 +1,18 @@
-package quizzzical;
+package quizzzical.ui;
+import quizzzical.ui.AdminPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import quizzzical.model.QuizResults;
 
 /**
 * Login page for Quizzical auhor M.M !!
-*
-* Flow: Admin login + correct admin details -> AdminPage
-* Student login + correct student details -> QuizPage
-* anything else -> prints "Error", shows an error box, stays on the login page
-*
-* Launch with: new LoginPage().setVisible(true);
+
+Flow: Admin login + correct admin details -> AdminPage
+Student login + correct student details -> QuizResults
+anything else -> prints "Error", shows an error box, stays on the login page
+
+Launch with: new LoginPage().setVisible(true);
 */
 public class LoginPage extends JFrame {
 
@@ -53,7 +55,7 @@ private void attempt(String role, String user, String pass) {
 if (isValid(role, user, pass)) {
 dispose();
 if ("Admin".equals(role)) new AdminPage().setVisible(true);
-else new QuizPage(user).setVisible(true);
+else new QuizResults(user).setVisible(true);
 } else {
 System.out.println("Error");
 JOptionPane.showMessageDialog(this,

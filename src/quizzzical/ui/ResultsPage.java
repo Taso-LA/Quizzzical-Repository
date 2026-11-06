@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package quizzzical;
+package quizzzical.ui;
 
 /**
  *
  * @author Nonhlanhla Shabangu
  */
-public class Login_Details extends javax.swing.JFrame {
+public class ResultsPage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login_Details.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ResultsPage.class.getName());
 
     /**
      * Creates new form Login_Details
      */
-    public Login_Details() {
+    public ResultsPage() {
         initComponents();
     }
 
@@ -100,7 +100,7 @@ public class Login_Details extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Login_Details().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ResultsPage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
