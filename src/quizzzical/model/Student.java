@@ -35,3 +35,4 @@ public class Student implements Serializable
         this.initials = initials;
     }
 }
+
